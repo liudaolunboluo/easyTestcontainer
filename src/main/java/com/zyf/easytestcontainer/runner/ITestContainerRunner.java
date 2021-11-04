@@ -1,5 +1,6 @@
 package com.zyf.easytestcontainer.runner;
 
+import org.junit.Ignore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.DockerClientFactory;
@@ -15,6 +16,8 @@ public interface ITestContainerRunner {
 
     Logger log = LoggerFactory.getLogger(ITestContainerRunner.class.getName());
 
+    String IGNORE_CONFIG_KEY = "maven.testcontainer.skip";
+
     /**
      * 是否需要忽略此单元测试
      *
@@ -23,8 +26,8 @@ public interface ITestContainerRunner {
      * @date 2021/10/17
      */
     default boolean needToIgnore() {
-        if (!DockerClientFactory.instance().isDockerAvailable()) {
-            log.warn("no Docker environment,ignore this junit test,className:{}", getTestClassName());
+        if (Boolean.TRUE.equals(Boolean.valueOf(System.getProperty(IGNORE_CONFIG_KEY)))) {
+            log.warn("your configuration parameters let this class:{} no unit tests were run", getTestClassName());
             return true;
         }
         return false;

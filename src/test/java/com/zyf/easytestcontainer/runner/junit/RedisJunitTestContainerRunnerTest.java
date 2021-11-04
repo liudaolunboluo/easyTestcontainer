@@ -18,8 +18,7 @@ public class RedisJunitTestContainerRunnerTest {
 
     @Test
     public void testContext() {
-        System.out.println(RedisJunitTestContainerContext.getRedisHost());
-        System.out.println(RedisJunitTestContainerContext.getRedisPort());
+        assertNotNull(RedisJunitTestContainerContext.getRedisHost());
         assertNotNull(RedisJunitTestContainerContext.getRedisPort());
     }
 }
