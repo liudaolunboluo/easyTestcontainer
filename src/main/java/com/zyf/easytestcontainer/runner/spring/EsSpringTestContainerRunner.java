@@ -1,10 +1,16 @@
 package com.zyf.easytestcontainer.runner.spring;
 
+import com.github.dockerjava.api.command.CreateContainerCmd;
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.Ports;
 import com.zyf.easytestcontainer.constant.SpringConfigEnum;
 import org.junit.runners.model.InitializationError;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.utility.DockerImageName;
+
+import java.util.function.Consumer;
 
 /**
  * @author zhangyunfan@fiture.com
@@ -24,9 +30,14 @@ public class EsSpringTestContainerRunner extends AbstractSpringTestContainerRunn
 
     @Override
     public GenericContainer<?> initContainer() {
+        int hostPort = ES_PORT;
+        int containerExposedPort = ES_PORT;
+        Consumer<CreateContainerCmd> cmd = e -> e.withPortBindings(new PortBinding(Ports.Binding.bindPort(hostPort), new ExposedPort(containerExposedPort)));
         ElasticsearchContainer container = new ElasticsearchContainer(
                 DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch-oss").withTag(ELASTICSEARCH_VERSION));
         container.withPassword("test");
+        container.withExposedPorts(containerExposedPort);
+        container.withCreateContainerCmdModifier(cmd);
         return container;
     }
 
