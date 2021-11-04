@@ -1,9 +1,16 @@
 package com.zyf.easytestcontainer.runner.spring;
 
+import com.github.dockerjava.api.command.CreateContainerCmd;
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.Ports;
 import com.zyf.easytestcontainer.annotation.RedisTestContainerConfig;
 import com.zyf.easytestcontainer.constant.SpringConfigEnum;
 import org.junit.runners.model.InitializationError;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.MySQLContainer;
+
+import java.util.function.Consumer;
 
 /**
  * @author zhangyunfan@fiture.com
@@ -25,8 +32,13 @@ public class RedisSpringTestContainerRunner extends AbstractSpringTestContainerR
     @Override
     public GenericContainer<?> initContainer() {
         RedisTestContainerConfig redisTestContainerConfig = getTestClass().getJavaClass().getAnnotation(RedisTestContainerConfig.class);
+        int hostPort = REDIS_PORT;
+        int containerExposedPort = REDIS_PORT;
+        Consumer<CreateContainerCmd> cmd = e -> e.withPortBindings(new PortBinding(Ports.Binding.bindPort(hostPort), new ExposedPort(containerExposedPort)));
         GenericContainer<?> redis = new GenericContainer<>(redisTestContainerConfig != null ? redisTestContainerConfig.image() : REDIS_IMAGE);
-        redis.withExposedPorts(REDIS_PORT).withCommand("--requirepass test");
+        redis.withCommand("--requirepass test");
+        redis.withExposedPorts(containerExposedPort);
+        redis.withCreateContainerCmdModifier(cmd);
         return redis;
     }
 
