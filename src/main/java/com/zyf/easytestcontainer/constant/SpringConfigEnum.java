@@ -34,7 +34,11 @@ public enum SpringConfigEnum {
 
     ELASTICSEARCH_PASSWORD("elasticsearch.port"),
 
-    ELASTICSEARCH_HOST("elasticsearch.host");
+    ELASTICSEARCH_HOST("elasticsearch.host"),
+
+    NEO4J_URI("spring.data.neo4j.uri"),
+
+    ;
 
     private final String value;
 

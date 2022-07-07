@@ -6,12 +6,12 @@
 
     <groupId>io.github.liudaolunboluo</groupId>
     <artifactId>easytestcontainers</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <testcontainers.version>1.15.0</testcontainers.version>
+        <testcontainers.version>1.17.3</testcontainers.version>
         <spring-test.version>5.2.1.RELEASE</spring-test.version>
         <lombok-version>RELEASE</lombok-version>
         <mockito-version>3.1.0</mockito-version>
@@ -42,6 +42,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>neo4j</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok-version}</version>
@@ -52,6 +58,12 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito-version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j.driver</groupId>
+            <artifactId>neo4j-java-driver</artifactId>
+            <version>4.4.3</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
